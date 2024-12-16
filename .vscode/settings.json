@@ -3,6 +3,9 @@
         "ios": "cpp",
         "vector": "cpp",
         "__hash_table": "cpp",
-        "unordered_map": "cpp"
+        "unordered_map": "cpp",
+        "istream": "cpp",
+        "iostream": "cpp",
+        "ostream": "cpp"
     }
 }

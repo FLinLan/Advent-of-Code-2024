@@ -11,6 +11,8 @@
 #include <utility>
 #include <unordered_set>
 #include <unordered_map>
+#include <sstream>
+
 
 using namespace std;
 
@@ -36,25 +38,42 @@ const ll INF = 1e9;
 const ld EPS = 1e-9;
 const char nl = '\n';
 
-void solve() {
-    // g++ -std=c++17 day1.cpp -o day1 && ./day1 < input.txt > output.txt
-    vector<int> left;
-    unordered_map<int, int> rightMap;
-    
-    for (int i = 0; i < 1000; i++) {
-        int a, b;
-        cin >> a >> b;
-        left.push_back(a);
-        rightMap[b]++;
-    }
+bool isSafe(vector<int>& nums) {
+    if (nums.empty()) return false;
 
-    int ans = 0;
-    for (int n : left) { 
-        if (rightMap.count(n)) {
-            ans += (n * rightMap[n]);
+    vector<int> sortedNums(nums.begin(), nums.end());
+    sort(sortedNums.begin(), sortedNums.end());
+
+    for (int i = 1; i < sortedNums.size(); i++) {
+        int diff = abs(sortedNums[i] - sortedNums[i - 1]);
+        if (diff < 1 || diff > 3) {
+            return false;
         }
     }
 
+    return nums == sortedNums || nums == vector<int>(sortedNums.rbegin(), sortedNums.rend());
+}
+
+vector<int> parseLine() {
+    vector<int> nums;
+    string line;
+    getline(cin, line);
+    istringstream iss(line);
+    int n;
+    while (iss >> n) {
+        nums.push_back(n);
+    }
+    return nums;
+}
+void solve() {
+    // g++ -std=c++17 day2part1.cpp -o day2part1 && ./day2part1 < input.txt > output.txt
+    int ans = 0;
+    for (int i = 0; i < 1000; i++) {
+        vector<int> nums = parseLine();
+        if(isSafe(nums)) {
+            ans += 1;
+        }
+    }
     cout << ans << endl;
 }
 
