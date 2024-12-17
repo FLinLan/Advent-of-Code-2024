@@ -16,6 +16,19 @@ def iinp():
 def linp():
     return list(map(int, inp().split()))
 
+
+def properOrder(line, rules):
+    N = len(line)
+    swapped = True
+    while swapped:
+        swapped = False
+        for i in range(N - 1):
+            inversion = (int(line[i + 1]), int(line[i]))
+            if inversion in rules:
+                line[i], line[i + 1] = line[i + 1], line[i]
+                swapped = True
+    return int(line[N // 2])
+
 def solve():
     # Read first part of the input and store in a set of tuples
     rules = set()
@@ -38,7 +51,6 @@ def solve():
         candidates.append(line.split(','))
 
     ans = 0
-    print(candidates, rules)
     # Convert the lists of strings to integers
     for line in candidates:
         invalid_order = False
@@ -47,9 +59,8 @@ def solve():
             inversion = (int(line[i+1]), int(line[i]))
             if inversion in rules:
                 invalid_order = True
-        if not invalid_order:
-            ans += int(line[N//2])
-
+        if invalid_order:
+            ans += properOrder(line, rules)
     # Output the results
     print(ans)
 
