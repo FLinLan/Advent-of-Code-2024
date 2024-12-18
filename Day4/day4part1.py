@@ -7,13 +7,13 @@ from typing import List
 sys.stdin = open('in3.txt', 'r')
 # sys.stdout = open('output.txt', 'w')
 
-def inp(): 
+def inp():
     return sys.stdin.readline().strip()
 
-def iinp(): 
+def iinp():
     return int(inp())
 
-def linp(): 
+def linp():
     return list(map(int, inp().split()))
 
 def read_matrix() -> List[List[str]]:
@@ -43,18 +43,18 @@ def countWords(r, c, ROWS, COLS, matrix):
         (0, 1), (0, -1), (1, 0), (-1, 0),       # Horizontal and Vertical
         (-1, 1), (1, -1), (-1, -1), (1, 1)      # Diagonals
     ]
-    
+
     cnt = 0
     for dr, dc in directions:
         if formWord(r, c, dr, dc, matrix):
             cnt += 1
-            
+
     return cnt
-    
+
 def solve():
     # Read the grid into a matrix
     matrix = read_matrix()
-    
+
     ans = 0
     ROWS, COLS = len(matrix), len(matrix[0])
     for r in range(ROWS):
@@ -67,16 +67,15 @@ def solve():
 def main():
     # For single test case
     solve()
-    
+
     # Uncomment below for multiple test cases
     # t = iinp()
     # for _ in range(t):
     #     solve()
-    
+
 if __name__ == "__main__":
     sys.setrecursionlimit(1000000)
     try:
         main()
     finally:
         sys.stdin.close()
-        

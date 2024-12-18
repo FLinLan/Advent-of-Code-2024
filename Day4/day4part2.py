@@ -1,87 +1,54 @@
 #!/usr/bin/env python3
 import sys
-from typing import List
 
 # File I/O setup
-sys.stdin = open('in4.txt', 'r')
-# sys.stdout = open('output.txt', 'w')
+sys.stdin = open('in5.txt', 'r')
 
-def inp(): 
+def inp():
     return sys.stdin.readline().strip()
-
-def iinp(): 
-    return int(inp())
-
-def linp(): 
-    return list(map(int, inp().split()))
-
-def read_matrix() -> List[List[str]]:
-    matrix = []
-    while True:
-        line = inp()
-        if not line:
-            break
-        matrix.append(list(line))
-    return matrix
-
-def validCorner(r, c, row_start, col_start) -> bool:
-    # Check diagonals for X pattern
-    return ((r == row_start and (c == col_start + 1 - 1 or c == col_start + 1 + 1)) or 
-            (r == row_start + 2 and (c == col_start + 1 - 1 or c == col_start + 1 + 1)))
 
 def isValid(r, c, ROWS, COLS):
     return 0 <= r < ROWS and 0 <= c < COLS
 
-def validSubGrid(row, col, ROWS, COLS, matrix, verifier) -> bool:
-    if col == 0 or col >= COLS - 2:  # Need space for the X pattern
-        return False
-        
-    sub_tuple = []
-    for r in range(row, row + 3):
-        row_tuple = []
-        for c in range(col, col + 3):
-            if isValid(r, c, ROWS, COLS):
-                if validCorner(r, c, row, col):
-                    row_tuple.append(matrix[r][c])
-                elif r == row + 1 and c == col + 1:  # Center A
-                    row_tuple.append(matrix[r][c])
-                else:
-                    row_tuple.append('.')
-        sub_tuple.append(tuple(row_tuple))
-    
-    sub_tuple = tuple(sub_tuple)
-    return sub_tuple in verifier
-                
+def validPattern(r, c, ROWS, COLS, grid):
+    if not isValid(r+2, c+2, ROWS, COLS): return False
+    first = (grid[r][c] == 'M' and grid[r][c+2] == 'M' and grid[r+1][c+1] == 'A' and grid[r+2][c] == 'S' and grid[r+2][c+2] == 'S')
+    second = (grid[r][c] == 'M' and grid[r][c+2] == 'S' and grid[r+1][c+1] == 'A' and grid[r+2][c] == 'M' and grid[r+2][c+2] == 'S')
+    third = (grid[r][c] == 'S' and grid[r][c+2] == 'M' and grid[r+1][c+1] == 'A' and grid[r+2][c] == 'S' and grid[r+2][c+2] == 'M')
+    fourth = (grid[r][c] == 'S' and grid[r][c+2] == 'S' and grid[r+1][c+1] == 'A' and grid[r+2][c] == 'M' and grid[r+2][c+2] == 'M')
+
+    return first or second or third or fourth
+
+
 def solve():
-    # Read the grid into a matrix
-    matrix = read_matrix()
-    
-    # Define valid X-MAS patterns (M.S, .A., M.S) and its variations
-    v1 = (('M', '.', 'S'), ('.', 'A', '.'), ('M', '.', 'S'))  # MAS/MAS
-    v2 = (('S', '.', 'M'), ('.', 'A', '.'), ('S', '.', 'M'))  # SAM/SAM
-    v3 = (('M', '.', 'S'), ('.', 'A', '.'), ('S', '.', 'M'))  # MAS/SAM
-    v4 = (('S', '.', 'M'), ('.', 'A', '.'), ('M', '.', 'S'))  # SAM/MAS
-    
-    verifier = {v1, v2, v3, v4}
-    
+    # Reading the grid of characters
+    grid = []
+
+    for line in sys.stdin:
+        line = line.strip()
+        if line:
+            grid.append(list(line))  # Convert each line into a list of characters
+    print(grid)
+
     ans = 0
-    ROWS, COLS = len(matrix), len(matrix[0])
-    for r in range(ROWS - 2):
-        for c in range(COLS - 2):
-            if validSubGrid(r, c, ROWS, COLS, matrix, verifier):
+    ROWS, COLS = len(grid), len(grid[0])
+    for r in range(ROWS):
+        for c in range(COLS):
+            if validPattern(r, c, ROWS, COLS, grid):
                 ans += 1
-    
     print(ans)
-    return ans
 
 def main():
     # For single test case
     solve()
-    
+    # Uncomment below for multiple test cases
+    # t = int(inp())
+    # for _ in range(t):
+    #     solve()
+
 if __name__ == "__main__":
     sys.setrecursionlimit(1000000)
     try:
         main()
     finally:
         sys.stdin.close()
-        
