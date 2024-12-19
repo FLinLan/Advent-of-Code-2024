@@ -9,8 +9,17 @@ def inp():
     return sys.stdin.readline().strip()
 
 def solve():
-    # Reading input string
-    line = inp()
+    # Reading input grid
+    grid = []
+    for line in sys.stdin:
+        line = line.strip()
+        if line:
+            grid.append([int(ch) for ch in line])
+
+    ROWS, COLS = len(grid), len(grid[0])
+    visit = set()
+    ans = 0
+
 
 def main():
     # For single test case

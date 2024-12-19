@@ -11,7 +11,6 @@ def inp():
 
 def dp(current, target, i, nums, cache) -> bool:
     if current > target or i >= len(nums):
-        # print(f"Match found: current={current}, target={target}")
         return current == target  # Check if the current value equals the target
     if (current, i) in cache:
         return cache[(current, i)]

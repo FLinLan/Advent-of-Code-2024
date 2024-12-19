@@ -32,7 +32,7 @@ def formWord(r, c, dr, dc, matrix):
         if not isValid(nr, nc, len(matrix), len(matrix[0])):
             return False
         word += matrix[nr][nc]
-    return word == "XMAS" 
+    return word == "XMAS"
 # or word == "SAMX"
 
 def isValid(r, c, ROWS, COLS) -> bool:
